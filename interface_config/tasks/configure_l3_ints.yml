@@ -1,0 +1,27 @@
+- name: Configure Layer 3 IP on Cisco IOS interfaces
+  cisco.ios.ios_l3_interfaces:
+    config:
+      - name: "{{item.name}}"
+        ipv4:
+          - address: "{{item.ip}}"
+  when: ansible_network_os == "ios" and item.ip != "dhcp"
+  loop: "{{interfaces}}"
+
+- name: Configure DHCP IP on Cisco IOS interfaces
+  cisco.ios.ios_l3_interfaces:
+    config:
+      - name: "{{item.name}}"
+        ipv4:
+          - dhcp:
+              enable: true
+  when: ansible_network_os == "ios" and item.ip == "dhcp"
+  loop: "{{interfaces}}"
+  
+- name: Configure Layer 3 IP on Cisco NXOS interfaces
+  cisco.nxos.nxos_l3_interfaces:
+    config:
+      - name: "{{item.name}}"
+        ipv4:
+          - address: "{{item.ip}}"
+  when: ansible_network_os == "nxos" and item.ip != "None"
+  loop: "{{interfaces}}"

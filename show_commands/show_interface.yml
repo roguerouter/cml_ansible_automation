@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: false
+
+  tasks:
+
+  - name: Run show version on remote devices
+    cisco.ios.ios_command:
+      commands: show ip interface brief
+    register: interface_output
+    when: ansible_network_os == "ios"
+  
+  - debug:
+      var: interface_output.stdout_lines
+    when: ansible_network_os == "ios"
+
+
+  - name: Run show version on remote devices
+    cisco.nxos.nxos_command:
+      commands: 
+      - show ip interface brief
+      - show ip interface brief vrf management
+    register: interface_output
+    when: ansible_network_os == "nxos"
+  
+  - debug:
+      var: interface_output.stdout_lines
+    when: ansible_network_os == "nxos"

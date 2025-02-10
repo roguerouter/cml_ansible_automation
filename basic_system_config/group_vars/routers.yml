@@ -1,0 +1,2 @@
+banner: "This is the banner for routers"
+ntp_src_int: "GigabitEthernet8"

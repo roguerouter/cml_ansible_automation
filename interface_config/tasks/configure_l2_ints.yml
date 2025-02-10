@@ -1,0 +1,8 @@
+- name: Configure Layer2 interfaces on Nexus
+  cisco.nxos.nxos_l2_interfaces:
+    config:
+      - name: "{{item.name}}"
+        access:
+          vlan: "{{item.vlan}}"
+  when: ansible_network_os == "nxos" and item.vlan != "None"
+  loop: "{{interfaces}}"

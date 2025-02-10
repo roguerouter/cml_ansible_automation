@@ -1,0 +1,11 @@
+- name: Apply the provided configuration
+  cisco.ios.ios_hostname:
+    config:
+      hostname: "{{inventory_hostname}}"
+  when: ansible_network_os == "ios"
+
+- name: Apply the provided configuration
+  cisco.nxos.nxos_hostname:
+    config:
+      hostname: "{{inventory_hostname}}"
+  when: ansible_network_os == "nxos"

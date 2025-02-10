@@ -1,0 +1,5 @@
+ansible_connection: ansible.netcommon.network_cli
+ntpserver: 172.16.1.1
+banner: "Global All Banner Config"
+snmp_user: snmpv3
+snmp_group: snmpv3_grp

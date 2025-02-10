@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: false
+
+  tasks:
+
+  - import_tasks: ./tasks/banner.yml
+    tags: banner
+  - import_tasks: ./tasks/hostname.yml
+    tags: hostname
+  - import_tasks: ./tasks/ntp.yml
+    tags: ntp
+  - import_tasks: ./tasks/snmp.yml
+    tags: snmp

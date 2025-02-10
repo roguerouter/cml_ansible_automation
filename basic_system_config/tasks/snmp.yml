@@ -1,0 +1,32 @@
+- cisco.ios.ios_snmp_server:
+    config:
+      groups:
+      - group: "{{snmp_group}}"
+        version: "v3"
+        version_option: "priv"
+      users:
+      - authentication:
+          algorithm: sha
+          password: "s3cr3tpw1"
+        encryption:
+          password: "s3cr3tpw1"
+          priv: aes
+          priv_option: 256
+        group: "{{snmp_group}}"
+        username: "{{snmp_user}}"
+        version: "v3"
+      source_interface: GigabitEthernet8
+  when: ansible_network_os == "ios"
+
+- cisco.nxos.nxos_snmp_server:
+    config:
+      users:
+        auth:
+          - user: "{{snmp_user}}"
+            group: "{{nxos_snmp_role}}"
+            authentication:
+              algorithm: sha-256
+              password: "s3cr3tpw1"
+              priv: 
+                privacy_password: "s3cr3tpw1"
+  when: ansible_network_os == "nxos"

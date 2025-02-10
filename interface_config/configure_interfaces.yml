@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: false
+
+  tasks:
+   
+  - import_tasks: ./tasks/enable_features.yml
+    tags: enable_features
+  - import_tasks: ./tasks/configure_vlans.yml
+    tags: config_vlans
+  - import_tasks: ./tasks/enable_interfaces.yml
+    tags: enable_ints
+  - import_tasks: ./tasks/configure_l3_ints.yml
+    tags: config_l3_ints
+  - import_tasks: ./tasks/configure_l2_ints.yml
+    tags: config_l2_ints

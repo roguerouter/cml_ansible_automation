@@ -1,0 +1,27 @@
+- name: Configure and Enable Cisco IOS interfaces
+  cisco.ios.ios_interfaces:
+    config:
+      - name: "{{item.name}}"
+        description: "{{item.desc}}"
+        enabled: "{{item.enabled}}"
+  when: ansible_network_os == "ios"
+  loop: "{{interfaces}}"
+
+- name: Configure and Enable Cisco NXOS interfaces
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "{{item.name}}"
+        description: "{{item.desc}}"
+        enabled: "{{item.enabled}}"
+        mode: "{{item.mode}}"
+  when: ansible_network_os == "nxos" and item.mode != "None"
+  loop: "{{interfaces}}"
+
+- name: Configure and Enable Cisco NXOS SVI (Vlan) interfaces
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "{{item.name}}"
+        description: "{{item.desc}}"
+        enabled: "{{item.enabled}}"
+  when: ansible_network_os == "nxos" and item.mode == "None"
+  loop: "{{interfaces}}"

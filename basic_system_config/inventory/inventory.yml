@@ -1,0 +1,12 @@
+all:
+  children:
+    routers:
+      hosts:
+        c8kv-internet:
+          ansible_host: 172.16.1.101
+          ansible_network_os: ios  
+    switches:
+      hosts:
+        n9kv-sw1: 
+          ansible_host: 172.16.1.102
+          ansible_network_os: nxos

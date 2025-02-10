@@ -1,0 +1,11 @@
+- name: Configure the login banner (IOS)
+  cisco.ios.ios_banner:
+    banner: login
+    text: "{{banner}}"
+  when: ansible_network_os == "ios"
+
+- name: configure the exec banner (NXOS)
+  cisco.nxos.nxos_banner:
+    banner: exec
+    text: "{{banner}}"
+  when: ansible_network_os == "nxos"

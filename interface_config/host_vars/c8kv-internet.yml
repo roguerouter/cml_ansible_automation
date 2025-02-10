@@ -1,0 +1,9 @@
+interfaces:
+- name: GigabitEthernet1
+  desc: WAN/NAT interfaces (DHCP)
+  enabled: true
+  ip: dhcp
+- name: GigabitEthernet2
+  desc: Link to n9kv-sw1
+  enabled: true
+  ip: 192.168.100.254/24

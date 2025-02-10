@@ -1,0 +1,7 @@
+- name: Configure NXOS Vlans
+  cisco.nxos.nxos_vlans:
+    config:
+      - vlan_id: "{{item.vlan}}"
+        name: hosts_in_vlan_"{{item.vlan}}"
+  when: ansible_network_os == "nxos" and item.vlan != "None"
+  loop: "{{interfaces}}"  
