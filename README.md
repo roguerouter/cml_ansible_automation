@@ -6,7 +6,7 @@ This is a repository containing all the files used to create the network automat
 
 To download this lab, click here: [cml_lab.yaml](./CML_Lab/cml_lab.yaml).  When you open this link you will see an icon to download the file from the Github repository. (see Figure 1)
 
-Figure 1 - Download Icon
+**Figure 1 - Download Icon**
 ![Example Github Download Button](./images/download_icon_git.png)
 
 Once you have the lab downloaded, log into your CML server and from the dashboard, select import (see Figure 2)
