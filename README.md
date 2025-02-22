@@ -12,6 +12,7 @@ To download this lab, click here: [cml_lab.yaml](./CML_Lab/cml_lab.yaml).  When 
 Once you have the lab downloaded, log into your CML server and from the dashboard, select import (see Figure 2)
 
 **Figure 2 - Import button**
+
 ![CML Import Button](./images/import_cml.png)
 
 From the import window, click in the grey bar for "Files to import" and browse for the cml_lab.yaml file you downloaded.  Double click the file to prepare it for import, then hit the blue import button.
