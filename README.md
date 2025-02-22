@@ -26,6 +26,7 @@ Once imported, follow the steps below to configure the Ubuntu host.
 The initial lab configuration for CML can be found in the CML Lab directory.  To access the Ubuntu host you need an IP address on your home network setup on the ENS2 interface.  Please make sure the current config of the Ubuntu host is accurate for your home network or the network your bridge0 interface in CML is configured to use. (see Figure 3)
 
 **Figure 3 - Ubuntu ENS2 configuration**
+
 ![Ubuntu ENS2 configuration](./images/lab_ubuntu_int-ens2.png)
 
 The default username and password for all systems is 
@@ -36,6 +37,7 @@ The default username and password for all systems is
 If you want to use a different user name, please update the node configuration for each device and change the startup configurations.  The node configuration can be found by clicking the node on the lab canvas, selecting config from the pop out screen, and locating the username and password configuration.  If you are not comfortable editting the node, boot the system up, log into the devices, and change the username configuration from the CLI.
 
 **Figure 4 - Change node password (Router Example)**
+
 ![Ubuntu ENS2 configuration](./images/lab_ubuntu_int-ens2.png)
 
 To change password from Ubuntu CLI use **passwd** command from terminal, enter your desired password when prompted
