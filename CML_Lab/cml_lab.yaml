@@ -1,0 +1,614 @@
+annotations: []
+smart_annotations:
+  - tag: vlan30
+    is_on: true
+    padding: 25
+    label: vlan30
+    tag_offset_x: 0
+    tag_offset_y: 17
+    tag_size: 14
+    group_distance: 0
+    thickness: 1
+    border_style: ''
+    fill_color: '#B7E3D980'
+    border_color: '#00000080'
+    z_index: 1
+  - tag: vlan20
+    is_on: true
+    padding: 25
+    label: vlan20
+    tag_offset_x: 0
+    tag_offset_y: -12
+    tag_size: 14
+    group_distance: 0
+    thickness: 1
+    border_style: ''
+    fill_color: '#F8A30080'
+    border_color: '#00000080'
+    z_index: 2
+  - tag: 192.168.100.0/24
+    is_on: true
+    padding: 25
+    label: 192.168.100.0/24
+    tag_offset_x: 0
+    tag_offset_y: -18
+    tag_size: 14
+    group_distance: 0
+    thickness: 1
+    border_style: ''
+    fill_color: '#FFD10080'
+    border_color: '#00000080'
+    z_index: 3
+nodes:
+  - boot_disk_size: null
+    configuration:
+      - name: default
+        content: System Bridge
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n0
+    image_definition: null
+    label: lan
+    node_definition: external_connector
+    parameters: {}
+    ram: null
+    tags: []
+    x: -440
+    y: -440
+    interfaces:
+      - id: i0
+        label: port
+        mac_address: null
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration:
+      - name: user-data
+        content: |-
+          #cloud-config
+          hostname: automation-jumphost
+          manage_etc_hosts: true
+          system_info:
+            default_user:
+              name: netadmin
+          password: s3cr3tpw1
+          chpasswd: { expire: False }
+          ssh_pwauth: True
+          ssh_authorized_keys:
+            - your-ssh-pubkey-line-goes-here
+          write_files:
+          - path: /etc/netplan/network.yaml
+            permissions: '0400'
+            content: |
+              network:
+                  version: 2
+                  ethernets:
+                      ens2:
+                          dhcp4: false
+                          addresses:
+                            - 192.168.1.226/24
+                          routes:
+                            - to: default
+                              via: 192.168.1.1
+                          nameservers:
+                            addresses:
+                              - 9.9.9.9
+                      ens3:
+                          dhcp4: false
+                          addresses:
+                            - 172.16.1.1/24
+          runcmd:
+          - netplan generate
+          - netplan apply
+          - apt update ; apt full-upgrade -y
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n1
+    image_definition: null
+    label: automation-jumphost
+    node_definition: ubuntu
+    parameters: {}
+    ram: null
+    tags: []
+    x: -80
+    y: -440
+    interfaces:
+      - id: i0
+        label: ens2
+        mac_address: null
+        slot: 0
+        type: physical
+      - id: i1
+        label: ens3
+        mac_address: null
+        slot: 1
+        type: physical
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: true
+    id: n2
+    image_definition: null
+    label: oob_mgmt_2
+    node_definition: unmanaged_switch
+    parameters: {}
+    ram: null
+    tags: []
+    x: -80
+    y: -320
+    interfaces:
+      - id: i0
+        label: port0
+        mac_address: null
+        slot: 0
+        type: physical
+      - id: i1
+        label: port1
+        mac_address: null
+        slot: 1
+        type: physical
+      - id: i2
+        label: port2
+        mac_address: null
+        slot: 2
+        type: physical
+      - id: i3
+        label: port3
+        mac_address: null
+        slot: 3
+        type: physical
+      - id: i4
+        label: port4
+        mac_address: null
+        slot: 4
+        type: physical
+      - id: i5
+        label: port5
+        mac_address: null
+        slot: 5
+        type: physical
+      - id: i6
+        label: port6
+        mac_address: null
+        slot: 6
+        type: physical
+      - id: i7
+        label: port7
+        mac_address: null
+        slot: 7
+        type: physical
+      - id: i8
+        label: port8
+        mac_address: null
+        slot: 8
+        type: physical
+      - id: i9
+        label: port9
+        mac_address: null
+        slot: 9
+        type: physical
+      - id: i10
+        label: port10
+        mac_address: null
+        slot: 10
+        type: physical
+      - id: i11
+        label: port11
+        mac_address: null
+        slot: 11
+        type: physical
+  - boot_disk_size: null
+    configuration:
+      - name: nxos_config.txt
+        content: |
+          hostname inserthostname-here
+          # workaround for booting to loader> prompt
+          echo 'from cli import cli' > set_boot.py
+          echo 'import json' >> set_boot.py
+          echo 'import os' >> set_boot.py
+          echo 'import time' >> set_boot.py
+          echo 'bootimage = json.loads(cli("show version | json"))["kick_file_name"]' >> set_boot.py
+          echo 'set_boot = cli("conf t ; boot nxos {} ; no event manager applet BOOTCONFIG".format(bootimage))' >> set_boot.py
+          echo 'i = 0' >> set_boot.py
+          echo 'while i < 10:' >> set_boot.py
+          echo '    try:' >> set_boot.py
+          echo '        save_config = cli("copy running-config startup-config")' >> set_boot.py
+          echo '        break' >> set_boot.py
+          echo '    except Exception:' >> set_boot.py
+          echo '        i += 1' >> set_boot.py
+          echo '        time.sleep(1)' >> set_boot.py
+          echo 'os.remove("/bootflash/set_boot.py")' >> set_boot.py
+          event manager applet BOOTCONFIG
+           event syslog pattern "Configured from vty"
+           action 1.0 cli python bootflash:set_boot.py
+          # minimum needed config to login
+          no password strength-check
+          username admin role network-admin
+          username admin password s3cr3tpw1 role network-admin
+          username netadmin role network-admin
+          username netadmin password s3cr3tpw1 role network-admin
+          interface Ethernet1/1
+           no switchport
+           ip address 192.168.16.2/30
+           no shutdown
+          int mgmt0
+           ip address 172.16.1.102/24
+           no shutdown
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n3
+    image_definition: null
+    label: n9kv-sw1
+    node_definition: nxosv9000
+    parameters: {}
+    ram: null
+    tags:
+      - vlan30
+      - vlan20
+      - 192.168.100.0/24
+    x: 40
+    y: -120
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: mgmt0
+        mac_address: null
+        slot: 0
+        type: physical
+      - id: i2
+        label: Ethernet1/1
+        mac_address: null
+        slot: 1
+        type: physical
+      - id: i3
+        label: Ethernet1/2
+        mac_address: null
+        slot: 2
+        type: physical
+      - id: i4
+        label: Ethernet1/3
+        mac_address: null
+        slot: 3
+        type: physical
+      - id: i5
+        label: Ethernet1/4
+        mac_address: null
+        slot: 4
+        type: physical
+      - id: i6
+        label: Ethernet1/5
+        mac_address: null
+        slot: 5
+        type: physical
+      - id: i7
+        label: Ethernet1/6
+        mac_address: null
+        slot: 6
+        type: physical
+      - id: i8
+        label: Ethernet1/7
+        mac_address: null
+        slot: 7
+        type: physical
+  - boot_disk_size: null
+    configuration:
+      - name: iosxe_config.txt
+        content: "Building configuration...\n\nCurrent configuration : 6558 bytes\n\
+          !\n! Last configuration change at 21:34:44 UTC Tue Feb 4 2025\n!\nversion\
+          \ 17.13\nservice timestamps debug datetime msec\nservice timestamps log\
+          \ datetime msec\nplatform qfp utilization monitor load 80\nplatform punt-keepalive\
+          \ disable-kernel-core\nplatform sslvpn use-pd\nplatform console serial\n\
+          !\nhostname c8kv-internet\n!\nboot-start-marker\nboot-end-marker\n!\n!\n\
+          vrf definition management\n !\n address-family ipv4\n exit-address-family\n\
+          !\nno logging console\nno aaa new-model\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n\
+          !\n!\nip domain name automation.lab\n!\n!\n!\nlogin on-success log\n!\n\
+          !\nsubscriber templating\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\npae\n!\n!\n\
+          crypto pki trustpoint SLA-TrustPoint\n enrollment pkcs12\n revocation-check\
+          \ crl\n hash sha256\n!\ncrypto pki trustpoint TP-self-signed-2556148887\n\
+          \ enrollment selfsigned\n subject-name cn=IOS-Self-Signed-Certificate-2556148887\n\
+          \ revocation-check none\n rsakeypair TP-self-signed-2556148887\n hash sha256\n\
+          !\n!\ncrypto pki certificate chain SLA-TrustPoint\n certificate ca 01\n\
+          \  30820321 30820209 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030\n\
+          \  32310E30 0C060355 040A1305 43697363 6F312030 1E060355 04031317 43697363\n\
+          \  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31 33303533 30313934\n\
+          \  3834375A 170D3338 30353330 31393438 34375A30 32310E30 0C060355 040A1305\n\
+          \  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720\n\
+          \  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101 05000382 010F0030\n\
+          \  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D\n\
+          \  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520\n\
+          \  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3 700A8BF7 D8F256EE\n\
+          \  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7 104FDC5F EA2956AC\n\
+          \  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3 C0BD23CF 58BD7188\n\
+          \  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F 539BA42B 42C68BB7\n\
+          \  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4 5D5D5FB8 8F27D191\n\
+          \  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B DF5F4368 95135E44\n\
+          \  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F 0101FF04 04030201\n\
+          \  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D 0E041604 1449DC85\n\
+          \  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648 86F70D01 010B0500\n\
+          \  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0 49631C78 240DA905\n\
+          \  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB 9093D3B1 6C9E3D8B\n\
+          \  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8\n\
+          \  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C\n\
+          \  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B\n\
+          \  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678\n\
+          \  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB\n\
+          \  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0\n\
+          \  D697DF7F 28\n  \tquit\ncrypto pki certificate chain TP-self-signed-2556148887\n\
+          \ certificate self-signed 01\n  30820330 30820218 A0030201 02020101 300D0609\
+          \ 2A864886 F70D0101 0B050030\n  31312F30 2D060355 04030C26 494F532D 53656C66\
+          \ 2D536967 6E65642D 43657274\n  69666963 6174652D 32353536 31343838 3837301E\
+          \ 170D3235 30323034 32303134\n  32375A17 0D333530 32303432 30313432 375A3031\
+          \ 312F302D 06035504 030C2649\n  4F532D53 656C662D 5369676E 65642D43 65727469\
+          \ 66696361 74652D32 35353631\n  34383838 37308201 22300D06 092A8648 86F70D01\
+          \ 01010500 0382010F 00308201\n  0A028201 01009B0C 055E31F8 7786722F 0F2AF375\
+          \ 07467A1F 74FA8092 428B2C81\n  580A9A77 1BC54D13 053318E6 F2D0DF8C 5590E729\
+          \ C704E25C 9852C69A 06E5B86E\n  A77FEC92 F520619B 39AFC7E8 CF7A501F C01B13BB\
+          \ B2BDDE95 D754295D A6EABE74\n  744B8579 FB1F3FB6 15FB3CFF D821D198 0544B021\
+          \ A77A0F1F 9E757510 BF03EC57\n  00B4BDD1 773764BB FA3073E8 227DC8CD 7ECBCBD8\
+          \ 56B728F2 EF3F6142 83473162\n  D207643F 8BDDCF5C ECA1EAE7 14A78E89 26D18C9A\
+          \ 0FB14DCC D1688CDE 65D17CBB\n  8A75B2FE F399524F 134EFE50 8190F53A 1AE56A06\
+          \ A2486DF2 1FAEAF4F 22603FCE\n  675C980D 9185052B 385CEC01 1F895DBF 2B2285D0\
+          \ D436A4D5 5C9AF8B7 CF16DD90\n  57C194B1 03E10203 010001A3 53305130 1D060355\
+          \ 1D0E0416 041466EF E894BAC3\n  0A2195DC 05EF9C96 5A5E1E13 BE78301F 0603551D\
+          \ 23041830 16801466 EFE894BA\n  C30A2195 DC05EF9C 965A5E1E 13BE7830 0F060355\
+          \ 1D130101 FF040530 030101FF\n  300D0609 2A864886 F70D0101 0B050003 82010100\
+          \ 585DD2D3 C968124A 267672DF\n  7DAF62A8 F20D36C4 A49526DC 4C5900CB 8BC8A8BE\
+          \ 9B96B962 40DDC5AA E5581B38\n  65EB5185 8AC3D8B0 E0730D1C 25BC3ADB 4A8F7BFF\
+          \ 35298655 AA924630 47DD246F\n  E800ABA9 291A678D 64B1E51B CC0BECD5 07D753C1\
+          \ B13EB29D 366C97FE B9BEA966\n  C722C031 78D7ACBB 3FB74FFB E6EFD6CB 31FD4CE1\
+          \ 0803F6EA 68183506 B68098E5\n  AD1E9CE3 F547FD47 CD8F882A EED3806B FE2C1239\
+          \ 6BD56E91 55C93F83 6D6186B2\n  2D2CF606 A59DB5C2 35E3D349 0949BF46 A229FDD0\
+          \ 3E79F136 4841DA9A 73378275\n  B89AAD48 32E5A9FE B431809B BAD7E1AB 020D18F7\
+          \ 0EE85F6F C34F1E21 F640361C\n  D13F4A5A 12E3A0BB 4049963D D785C11D 1B5ED138\n\
+          \  \tquit\n!\n!\n!\n!\n!\n!\n!\n!\n!\nlicense udi pid C8000V sn 9P0YZMNTMD3\n\
+          license boot level network-advantage addon dna-advantage\nmemory free low-watermark\
+          \ processor 201711\ndiagnostic bootup level minimal\n!\n!\nspanning-tree\
+          \ extend system-id\n!\n!\nusername netadmin privilege 15 secret 9 $9$CrlGOuWQE7ihNk$hAS4PAAnJbs5rsb6mFVC4.k4.BfkvH.it8yZpSYvVHo\n\
+          !\nredundancy\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n\
+          !\n!\n!\n!\n!\ninterface GigabitEthernet1\n ip address dhcp\n negotiation\
+          \ auto\n no mop enabled\n no mop sysid\n!\ninterface GigabitEthernet2\n\
+          \ no ip address\n negotiation auto\n no mop enabled\n no mop sysid\n!\n\
+          interface GigabitEthernet3\n no ip address\n shutdown\n negotiation auto\n\
+          \ no mop enabled\n no mop sysid\n!\ninterface GigabitEthernet4\n no ip address\n\
+          \ shutdown\n negotiation auto\n no mop enabled\n no mop sysid\n!\ninterface\
+          \ GigabitEthernet5\n no ip address\n shutdown\n negotiation auto\n no mop\
+          \ enabled\n no mop sysid\n!\ninterface GigabitEthernet6\n no ip address\n\
+          \ shutdown\n negotiation auto\n no mop enabled\n no mop sysid\n!\ninterface\
+          \ GigabitEthernet7\n no ip address\n shutdown\n negotiation auto\n no mop\
+          \ enabled\n no mop sysid\n!\ninterface GigabitEthernet8\n vrf forwarding\
+          \ management\n ip address 172.16.1.101 255.255.255.0\n negotiation auto\n\
+          \ no mop enabled\n no mop sysid\n!\nip forward-protocol nd\n!\nno ip http\
+          \ server\nip http secure-server\nip ssh bulk-mode 131072\n!\n!\n!\n!\n!\n\
+          !\ncontrol-plane\n!\n!\nmgcp behavior rsip-range tgcp-only\nmgcp behavior\
+          \ comedia-role none\nmgcp behavior comedia-check-media-src disable\nmgcp\
+          \ behavior comedia-sdp-force disable\n!\nmgcp profile default\n!\n!\n!\n\
+          !\n!\n!\nline con 0\n exec-timeout 0 0\n stopbits 1\nline aux 0\nline vty\
+          \ 0 4\n exec-timeout 0 0\n login local\n length 0\n transport input ssh\n\
+          !\n!\n!\n!\n!\n!\n!\nend"
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n4
+    image_definition: null
+    label: c8kv-internet
+    node_definition: cat8000v
+    parameters: {}
+    ram: null
+    tags:
+      - 192.168.100.0/24
+    x: -200
+    y: -120
+    interfaces:
+      - id: i0
+        label: Loopback0
+        mac_address: null
+        type: loopback
+      - id: i1
+        label: GigabitEthernet1
+        mac_address: null
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet2
+        mac_address: null
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet3
+        mac_address: null
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet4
+        mac_address: null
+        slot: 3
+        type: physical
+      - id: i5
+        label: GigabitEthernet5
+        mac_address: null
+        slot: 4
+        type: physical
+      - id: i6
+        label: GigabitEthernet6
+        mac_address: null
+        slot: 5
+        type: physical
+      - id: i7
+        label: GigabitEthernet7
+        mac_address: null
+        slot: 6
+        type: physical
+      - id: i8
+        label: GigabitEthernet8
+        mac_address: null
+        slot: 7
+        type: physical
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n5
+    image_definition: null
+    label: wan/nat
+    node_definition: external_connector
+    parameters: {}
+    ram: null
+    tags: []
+    x: -440
+    y: -120
+    interfaces:
+      - id: i0
+        label: port
+        mac_address: null
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration:
+      - name: node.cfg
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname host1-vl20
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+
+          ip address add 10.1.20.100/24 dev eth0
+          ip link set dev eth0 up
+          ip route add default via 10.1.20.254
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n6
+    image_definition: null
+    label: host1-vl20
+    node_definition: alpine
+    parameters: {}
+    ram: null
+    tags:
+      - vlan20
+    x: 280
+    y: -200
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration:
+      - name: node.cfg
+        content: |-
+          # this is a shell script which will be sourced at boot
+          hostname host2-vl30
+          # configurable user account
+          USERNAME=cisco
+          PASSWORD=cisco
+
+          ip address add 10.1.30.100/24 dev eth0
+          ip link set dev eth0 up
+          ip route add default via 10.1.30.254
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n7
+    image_definition: null
+    label: host2-vl30
+    node_definition: alpine
+    parameters: {}
+    ram: null
+    tags:
+      - vlan30
+    x: 280
+    y: -40
+    interfaces:
+      - id: i0
+        label: eth0
+        mac_address: null
+        slot: 0
+        type: physical
+links:
+  - id: l0
+    n1: n1
+    n2: n2
+    i1: i1
+    i2: i0
+    conditioning: {}
+    label: ubuntu-0-ens3<->unmanaged-switch-0-port0
+  - id: l1
+    n1: n1
+    n2: n0
+    i1: i0
+    i2: i0
+    conditioning: {}
+    label: automation-jumphost-ens2<->lan-port
+  - id: l2
+    n1: n3
+    n2: n2
+    i1: i1
+    i2: i3
+    conditioning: {}
+    label: nxos9000-0-mgmt0<->oob_mgmt_2-port3
+  - id: l3
+    n1: n4
+    n2: n2
+    i1: i8
+    i2: i4
+    conditioning: {}
+    label: cat8kv-internet-GigabitEthernet8<->oob_mgmt_2-port4
+  - id: l4
+    n1: n4
+    n2: n5
+    i1: i1
+    i2: i0
+    conditioning: {}
+    label: c8kv-internet-GigabitEthernet1<->wan/nat-port
+  - id: l5
+    n1: n4
+    n2: n3
+    i1: i2
+    i2: i2
+    conditioning: {}
+    label: c8kv-internet-GigabitEthernet2<->n9kv-sw1-Ethernet1/1
+  - id: l6
+    n1: n6
+    n2: n3
+    i1: i0
+    i2: i3
+    conditioning: {}
+    label: alpine-0-eth0<->n9kv-sw1-Ethernet1/2
+  - id: l7
+    n1: n7
+    n2: n3
+    i1: i0
+    i2: i4
+    conditioning: {}
+    label: alpine-1-eth0<->n9kv-sw1-Ethernet1/3
+  - id: l8
+    n1: n4
+    n2: n3
+    i1: i3
+    i2: i5
+    conditioning: {}
+    label: c8kv-internet-GigabitEthernet3<->n9kv-sw1-Ethernet1/4
+lab:
+  description: Learning lab for you to start getting hands on experience with network
+    automation.
+  notes: ''
+  title: Network Automation Series Lab
+  version: 0.3.0
