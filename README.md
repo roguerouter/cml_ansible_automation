@@ -34,11 +34,13 @@ The default username and password for all systems is
 * U: netadmin
 * P: s3cr3tpw1
 
-If you want to use a different user name, please update the node configuration for each device and change the startup configurations.  The node configuration can be found by clicking the node on the lab canvas, selecting config from the pop out screen, and locating the username and password configuration.  If you are not comfortable editting the node, boot the system up, log into the devices, and change the username configuration from the CLI.
+If you want to use a different user name, please update the node configuration for each device and change the startup configurations.  The node configuration can be found by clicking the node on the lab canvas, selecting config from the pop out screen, and locating the username and password configuration.  
 
 **Figure 4 - Change node password (Router Example)**
 
 ![Ubuntu ENS2 configuration](./images/lab_ubuntu_int-ens2.png)
+
+If you are not comfortable editting the node you can boot the nodes up, log into the devices, and change the username configuration from the CLI.  
 
 To change password from Ubuntu CLI use **passwd** command from terminal, enter your desired password when prompted
 
