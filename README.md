@@ -17,7 +17,8 @@ Once you have the lab downloaded, log into your CML server and from the dashboar
 
 From the import window, click in the grey bar for "Files to import" and browse for the cml_lab.yaml file you downloaded.  Double click the file to prepare it for import, then hit the blue import button.
 
-** If you are running a CML version prior to Version: 2.8.0+build.6, this will fail, you must be running 2.8.0+build.6 or greater **
+> [!IMPORTANT]
+> ** If you are running a CML version prior to Version: 2.8.0+build.6, this will fail, you must be running 2.8.0+build.6 or greater **
 
 Once imported, follow the steps below to configure the Ubuntu host.
 
