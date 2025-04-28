@@ -6,13 +6,12 @@ This is a repository containing all the files used to create the network automat
 
 To download this lab, click here: [cml_lab.yaml](./CML_Lab/cml_lab.yaml).  When you open this link you will see an icon to download the file from the Github repository. (see Figure 1)
 
-* Figure 1 - Download Icon
-
+**Figure 1 - Download Icon**
 ![Example Github Download Button](./images/download_icon_git.png)
 
 Once you have the lab downloaded, log into your CML server and from the dashboard, select import (see Figure 2)
 
-* Figure 2 - Import button
+**Figure 2 - Import button**
 
 ![CML Import Button](./images/import_cml.png)
 
@@ -26,7 +25,7 @@ Once imported, follow the steps below to configure the Ubuntu host.
 
 The initial lab configuration for CML can be found in the CML Lab directory.  To access the Ubuntu host you need an IP address on your home network setup on the ENS2 interface.  Please make sure the current config of the Ubuntu host is accurate for your home network or the network your bridge0 interface in CML is configured to use. (see Figure 3)
 
-* Figure 3 - Ubuntu ENS2 configuration
+**Figure 3 - Ubuntu ENS2 configuration**
 
 ![Ubuntu ENS2 configuration](./images/lab_ubuntu_int-ens2.png)
 
@@ -35,11 +34,13 @@ The default username and password for all systems is
 * U: netadmin
 * P: s3cr3tpw1
 
-If you want to use a different user name, please update the node configuration for each device and change the startup configurations.  The node configuration can be found by clicking the node on the lab canvas, selecting config from the pop out screen, and locating the username and password configuration.  If you are not comfortable editting the node, boot the system up, log into the devices, and change the username configuration from the CLI.
+If you want to use a different user name, please update the node configuration for each device and change the startup configurations.  The node configuration can be found by clicking the node on the lab canvas, selecting config from the pop out screen, and locating the username and password configuration.  
 
-* Figure 4 - Change node password (Router Example)
+**Figure 4 - Change node password (Router Example)**
 
 ![Ubuntu ENS2 configuration](./images/lab_ubuntu_int-ens2.png)
+
+If you are not comfortable editting the node you can boot the nodes up, log into the devices, and change the username configuration from the CLI.  
 
 To change password from Ubuntu CLI use **passwd** command from terminal, enter your desired password when prompted
 
