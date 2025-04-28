@@ -1,0 +1,32 @@
+interfaces:
+- name: Ethernet1/1
+  desc: Link to c8kv-internet
+  enabled: true
+  ip: 192.168.100.253/24
+  mode: layer3
+  vlan: None
+- name: Ethernet1/2
+  desc: access port config
+  enabled: true
+  ip: None
+  mode: layer2
+  vlan: 20
+- name: Ethernet1/3
+  desc: access port config
+  enabled: true
+  ip: None
+  mode: layer2
+  vlan: 30
+- name: vlan20
+  desc: Gateway for Vlan20
+  enabled: true
+  ip: 10.1.20.254/24
+  mode: None
+  vlan: None
+- name: vlan30
+  desc: Gateway for Vlan30
+  enabled: true
+  ip: 10.1.30.254/24
+  mode: None
+  vlan: None
+

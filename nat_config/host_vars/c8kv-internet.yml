@@ -1,0 +1,19 @@
+interfaces:
+- name: GigabitEthernet1
+  desc: WAN/NAT interfaces (DHCP)
+  enabled: true
+  ip: dhcp
+  nat: outside
+- name: GigabitEthernet2
+  desc: Link to n9kv-sw1
+  enabled: true
+  ip: 192.168.100.254/24
+  nat: inside
+
+natconfig:
+- name: 10
+  interface: GigabitEthernet1
+  rules:
+  - "10 permit 10.1.20.0 0.0.0.255"
+  - "20 permit 10.1.30.0 0.0.0.255"
+  - "15 permit 10.1.40.0 0.0.0.255"

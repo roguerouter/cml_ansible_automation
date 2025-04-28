@@ -1,0 +1,35 @@
+- hosts: all
+  gather_facts: false
+
+  tasks:
+
+  - name: Render Jinja2 template for NAT onto device
+    cisco.ios.ios_config:
+      src: ./templates/nat_config.j2
+    when: inventory_hostname == "c8kv-internet"
+  
+  - name: Configure Routing on C8KV-INTERNET
+    cisco.ios.ios_static_routes:
+      config:
+        - address_families:
+          - afi: ipv4
+            routes:
+              - dest: 10.1.20.0/24
+                next_hops: 
+                  - forward_router_address: 192.168.100.253
+              - dest: 10.1.30.0/24
+                next_hops: 
+                  - forward_router_address: 192.168.100.253
+    when: inventory_hostname == "c8kv-internet"
+    
+  - name: Configure Routing on N9kv-sw1
+    cisco.nxos.nxos_static_routes:
+      config:
+        - address_families:
+          - afi: ipv4
+            routes:
+              - dest: 0.0.0.0/0
+                next_hops: 
+                  - forward_router_address: 192.168.100.254
+    when: inventory_hostname == "n9kv-sw1"
+

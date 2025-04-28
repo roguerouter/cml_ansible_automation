@@ -1,0 +1,17 @@
+{% for int in interfaces %}
+interface {{int.name}}
+{% if int.name == "GigabitEthernet1" %}
+ ip nat {{ int.nat }}
+{% elif int.name == "GigabitEthernet2" %}
+ ip nat {{ int.nat }}
+{% endif %}
+{% endfor %}
+
+{% for nat in natconfig %}
+ip nat inside source list {{nat.name}} interface {{nat.interface}} overload
+
+ip access-list standard {{nat.name}}
+{% for rule in nat.rules %}
+ {{ rule }}
+{% endfor %}
+{% endfor %}
