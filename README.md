@@ -17,7 +17,9 @@ Once you have the lab downloaded, log into your CML server and from the dashboar
 
 From the import window, click in the grey bar for "Files to import" and browse for the cml_lab.yaml file you downloaded.  Double click the file to prepare it for import, then hit the blue import button.
 
-** If you are running a CML version prior to Version: 2.8.0+build.6, this will fail, you must be running 2.8.0+build.6 or greater **
+> [!IMPORTANT]
+> ** If you are running a CML version prior to Version: 2.8.0+build.6, this will
+> fail, you must be running 2.8.0+build.6 or greater **
 
 Once imported, follow the steps below to configure the Ubuntu host.
 
@@ -50,7 +52,10 @@ For NX-OS, enter configure terminal, enter:
 For IOS-XE, enter configure terminal, enter:
 * username netadmin privilege 15 secret *your_desired_password*
 
-**Note** Failure to enter privilege 15 will force the netadmin account to SSH in "enable" mode and prevent the ansible from executing properly.  Handling this scenario has not been addressed in the video series, yet.
+> [!NOTE]
+> Failure to enter privilege 15 will force the netadmin account to SSH in
+> "enable" mode and prevent the ansible from executing properly.  Handling this
+> scenario has not been addressed in the video series, yet.
 
 Once all your nodes boot up, confirm the following:
 
